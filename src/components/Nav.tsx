@@ -10,37 +10,17 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { name: 'Farmers', href: '#farmers' },
-  { name: 'Wholesalers', href: '#wholesalers' },
-  { name: 'NGOs & Distribution', href: '#ngo' },
-  { name: 'Sustainability', href: '#sustainability' },
-  { name: 'Contact Us', href: '#contact' },
+  { name: 'Home', href: '/' },
+  { name: 'Why Choose Us', href: '/WhyChooseUsPage' },
+  { name: 'Farmer Impact', href: '/farmer-impact' },
+  { name: 'SDG Goals', href: '/sdg-goals' },
+  { name: 'About Us', href: '/about-us' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('farmers');
   const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = navItems.map(item => item.href.slice(1));
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom > 100;
-        }
-        return false;
-      });
-      if (currentSection) {
-        setActiveSection(currentSection);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -63,7 +43,7 @@ export default function Nav() {
               href={item.href}
               className={`px-6 py-2 rounded-full text-sm transition-all duration-300
                 text-black 
-                ${item.href.slice(1) === activeSection
+                ${pathname === item.href
                   ? 'border-2 border-green-600 shadow-[0_0_15px_rgba(34,139,34,0.5)]'
                   : 'hover:bg-green-100 hover:shadow-[0_0_10px_rgba(34,139,34,0.3)]'
                 }
@@ -76,13 +56,13 @@ export default function Nav() {
           ))}
         </div>
 
-        {/* Partner With Us */}
+        {/* Join Us Button */}
         <div>
           <Link
-            href="/login"
+            href="/join-us"
             className="ml-4 px-5 py-2 text-sm rounded-full bg-green-600 text-white hover:bg-green-700 transition"
           >
-            Partner With Us
+            Join Us
           </Link>
         </div>
       </div>
@@ -114,7 +94,7 @@ export default function Nav() {
                   href={item.href}
                   className={`px-6 py-2 rounded-full text-sm transition-all duration-300
                     text-black 
-                    ${item.href.slice(1) === activeSection
+                    ${pathname === item.href
                       ? 'border-2 border-green-600 shadow-[0_0_15px_rgba(34,139,34,0.5)]'
                       : 'hover:bg-green-100 hover:shadow-[0_0_10px_rgba(34,139,34,0.3)]'
                     }
@@ -128,10 +108,10 @@ export default function Nav() {
             ))}
             <li>
               <Link
-                href="/login"
+                href="/join-us"
                 className="mt-2 px-5 py-2 text-sm rounded-full bg-green-600 text-white hover:bg-green-700 transition"
               >
-                Partner With Us
+                Join Us
               </Link>
             </li>
           </ul>

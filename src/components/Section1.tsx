@@ -4,12 +4,12 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-export default function Section1() {
+interface Section1Props {}
+
+const Section1: React.FC<Section1Props> = () => {
   const fullText = "Turning Farmers' Overproduction into Profits";
-  const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTyping, setIsTyping] = useState(true);
-  const [activeFeature, setActiveFeature] = useState(0);
+  const [activeWordIndex, setActiveWordIndex] = useState(0);
+  const words = fullText.split(' ');
 
   const features = [
     "Community Kitchens",
@@ -20,34 +20,14 @@ export default function Section1() {
     "Hospitals & Jails",
     "Institutional Canteens"
   ];
+  const [activeFeature, setActiveFeature] = useState(0);
 
   useEffect(() => {
-    const typingSpeed = 100;
-    const pauseDuration = 2000;
-
-    let timeout: NodeJS.Timeout;
-
-    if (isTyping) {
-      if (currentIndex < fullText.length) {
-        timeout = setTimeout(() => {
-          setDisplayedText(prev => prev + fullText[currentIndex]);
-          setCurrentIndex(prev => prev + 1);
-        }, typingSpeed);
-      } else {
-        timeout = setTimeout(() => {
-          setIsTyping(false);
-          setCurrentIndex(0);
-          setDisplayedText('');
-        }, pauseDuration);
-      }
-    } else {
-      timeout = setTimeout(() => {
-        setIsTyping(true);
-      }, 500);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [currentIndex, isTyping, fullText]);
+    const interval = setInterval(() => {
+      setActiveWordIndex(prev => (prev + 1) % words.length);
+    }, 1000); // Highlight a word every 1 second
+    return () => clearInterval(interval);
+  }, [words.length]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -57,16 +37,16 @@ export default function Section1() {
   }, [features.length]);
 
   return (
-    <section className="flex flex-col md:flex-row items-center justify-center px-5 md:px-[200px] py-16 bg-gradient-to-br from-[#e4ede4] to-[#d0e6d0] gap-x-[40px] text-center md:text-left overflow-hidden">
+    <section className="flex flex-col items-center justify-center px-5 py-16 bg-gradient-to-br from-[#e4ede4] to-[#d0e6d0] gap-x-[40px] text-center overflow-hidden md:flex-row md:px-[200px] md:text-left">
       {/* Left Side: Enhanced Text Content */}
       <motion.div
-        className="max-w-lg flex-1 min-w-[40px]"
+        className="max-w-lg flex-1 min-w-[40px] mb-8 md:mb-0"
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 50, duration: 1 }}
       >
         <div className="mb-6">
-          <motion.span 
+          <motion.span
             className="text-lg font-semibold text-green-700"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -74,9 +54,18 @@ export default function Section1() {
           >
             Agricultural Revolution
           </motion.span>
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight text-black min-h-[4rem] mt-2">
-            {displayedText}
-            <span className="animate-pulse">|</span>
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight text-black mt-2 flex flex-wrap justify-center md:block">
+            {words.map((word, index) => (
+              <motion.span
+                key={index}
+                className="inline-block mr-2 overflow-hidden"
+                style={{
+                  color: index === activeWordIndex ? '#f66b2a' : 'inherit',
+                }}
+              >
+                {word}
+              </motion.span>
+            ))}
           </h1>
         </div>
 
@@ -89,8 +78,8 @@ export default function Section1() {
           Our tech-driven platform bridges the gap between farmers and:
         </motion.p>
 
-        <motion.div 
-          className="my-6 h-12"
+        <motion.div
+          className="my-6 h-12 flex justify-center md:block"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
@@ -100,7 +89,7 @@ export default function Section1() {
               key={feature}
               className={`absolute text-xl font-medium ${index === activeFeature ? 'text-green-600' : 'text-transparent'}`}
               initial={{ y: 20, opacity: 0 }}
-              animate={{ 
+              animate={{
                 y: index === activeFeature ? 0 : -20,
                 opacity: index === activeFeature ? 1 : 0
               }}
@@ -112,17 +101,18 @@ export default function Section1() {
         </motion.div>
 
         <motion.div
+          className="flex flex-col items-center md:items-start"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
         >
           <motion.button
-            whileHover={{ 
-              scale: 1.05, 
+            whileHover={{
+              scale: 1.05,
               boxShadow: '0px 0px 15px rgba(184, 211, 88, 0.5)',
               transition: { duration: 0.1 }
             }}
-            whileTap={{ 
+            whileTap={{
               scale: 0.95,
               transition: { duration: 0.05 }
             }}
@@ -142,15 +132,15 @@ export default function Section1() {
 
       {/* Right Side: Enhanced Image with Story Elements */}
       <motion.div
-        className="flex-1 flex justify-end mt-10 md:mt-0 relative"
+        className="flex-1 flex justify-center mt-10 relative md:justify-end md:mt-0"
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 50, duration: 1 }}
       >
         <motion.div
-          animate={{ 
+          animate={{
             y: [0, -15, 0],
-            rotate: [0, -1, 0]
+            // Removed rotate animation here
           }}
           transition={{
             duration: 4,
@@ -166,9 +156,9 @@ export default function Section1() {
             height={400}
             className="rounded-xl shadow-xl max-w-full z-10 relative"
           />
-          
+
           {/* Animated story elements */}
-          <motion.div 
+          <motion.div
             className="absolute -bottom-6 -left-6 bg-white p-3 rounded-lg shadow-md z-20"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -179,8 +169,8 @@ export default function Section1() {
               <span className="text-xs font-medium text-black">Live Tracking</span>
             </div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="absolute -top-6 -right-6 bg-white p-3 rounded-lg shadow-md z-20"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -192,9 +182,9 @@ export default function Section1() {
             </div>
           </motion.div>
         </motion.div>
-        
+
         {/* Background decorative elements */}
-        <motion.div 
+        <motion.div
           className="absolute -z-10 w-64 h-64 bg-green-200 rounded-full blur-xl opacity-30 -bottom-20 -left-20"
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 5, repeat: Infinity }}
@@ -202,4 +192,6 @@ export default function Section1() {
       </motion.div>
     </section>
   );
-}
+};
+
+export default Section1;

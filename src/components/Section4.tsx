@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function Section4() {
   return (
-    <section className="flex flex-col md:flex-row items-center justify-center p-8 md:p-12 bg-gradient-to-br from-green-50 to-green-100">
+    <section className="flex flex-col md:flex-row items-center justify-center p-8 md:p-12 bg-green-50">
       {/* Text Section */}
       <div className="md:w-1/2 space-y-4 md:pr-10">
         <h2 className="text-4xl font-bold text-green-800">

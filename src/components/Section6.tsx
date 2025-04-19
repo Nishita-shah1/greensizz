@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function Section6() {
   return (
-    <section className="py-16 px-6 md:px-12 bg-gradient-to-b from-white to-green-50">
+    <section className="py-16 px-6 md:px-12 bg-green-50">
       <div className="max-w-6xl mx-auto">
         {/* Tech Section */}
         <div className="flex flex-col lg:flex-row gap-12 items-center mb-20">

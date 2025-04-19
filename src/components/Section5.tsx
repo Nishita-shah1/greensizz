@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function Section5() {
   return (
-    <section className="py-12 px-6 md:px-12 bg-white">
+    <section className="py-12 px-6 md:px-12 bg-gradient-to-br from-[#e4ede4] to-[#d0e6d0]">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">

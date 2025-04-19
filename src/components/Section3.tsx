@@ -38,7 +38,7 @@ export default function Section3() {
   }, []);
 
   return (
-    <section className="relative py-16 px-6 md:px-12 lg:px-24 bg-gradient-to-br from-[#f0f9f0] to-[#e0f3e0] overflow-hidden">
+    <section className="relative py-16 px-6 md:px-12 lg:px-24 bg-gradient-to-br from-[#e4ede4] to-[#d0e6d0] overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute -top-20 -right-20 w-64 h-64 bg-green-200 rounded-full opacity-20 blur-xl"></div>
       <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-green-100 rounded-full opacity-15 blur-xl"></div>
