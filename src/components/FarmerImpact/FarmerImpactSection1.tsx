@@ -33,7 +33,8 @@ export default function FarmerImpactSection1() {
   };
 
   return (
-    <section className="flex flex-col md:flex-row items-center justify-center p-8 md:p-12 bg-white pt-30">
+    <section className="flex flex-col md:flex-row items-center justify-center py-30 px-8 md:px-12 bg-white ">
+
       {/* Image Section with animation */}
       <motion.div
         className="md:w-1/2 flex justify-center mb-8 md:mb-0"
