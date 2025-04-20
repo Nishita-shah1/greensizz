@@ -17,7 +17,7 @@ const HeroSection: React.FC<HeroSectionProps> = () => {
       transition={{ duration: 0.8 }}
     >
       <motion.div
-        className="absolute inset-0 bg-[url('/farm-pattern.png')] opacity-10"
+        className="absolute inset-0 bg-[url('/empower.png')] opacity-10"
         initial={{ scale: 1.2 }}
         animate={{ scale: 1 }}
         transition={{ duration: 2, ease: "easeOut" }}

@@ -12,7 +12,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { name: 'Home', href: '/' },
   { name: 'Why Choose Us', href: '/WhyChooseUsPage' },
-  { name: 'Farmer Impact', href: '/farmer-impact' },
+  { name: 'Farmer Impact', href: '/FarmerImpact' },
   { name: 'SDG Goals', href: '/sdg-goals' },
   { name: 'About Us', href: '/about-us' },
   { name: 'Contact', href: '/contact' },
