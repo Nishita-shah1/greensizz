@@ -1,31 +1,15 @@
 'use client';
 import Image from 'next/image';
 import { motion, Variants } from 'framer-motion';
-import { useEffect, useState } from 'react';
 
 export default function FarmerImpactSection1() {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    // Set initial value
-    handleResize();
-    
-    // Add event listener
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   // Animation variants with TypeScript types
   const container: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: isMobile ? 0.1 : 0.2,
+        staggerChildren: 0.15, // Consistent stagger for all devices
       },
     },
   };
@@ -40,11 +24,11 @@ export default function FarmerImpactSection1() {
   };
 
   const imageAnimation: Variants = {
-    hidden: { opacity: 0, x: isMobile ? 0 : -50 },
+    hidden: { opacity: 0, x: -30 }, // Reduced movement for all devices
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: isMobile ? 0.5 : 0.8, ease: "easeOut" },
+      transition: { duration: 0.7, ease: "easeOut" },
     },
   };
 
@@ -55,13 +39,13 @@ export default function FarmerImpactSection1() {
   ];
 
   return (
-    <section className="flex flex-col md:flex-row items-center justify-center py-24 px-8 md:px-12 bg-white overflow-hidden">
+    <section className="flex flex-col md:flex-row items-center justify-center py-16 md:py-24 px-6 md:px-12 bg-white overflow-hidden">
       {/* Image Section with animation */}
       <motion.div
-        className="md:w-1/2 flex justify-center mb-8 md:mb-0"
+        className="w-full md:w-1/2 flex justify-center mb-10 md:mb-0"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: isMobile ? "0px" : "-100px" }}
+        viewport={{ once: true, margin: "-50px" }} // Consistent margin
         variants={imageAnimation}
       >
         <div className="relative w-full max-w-md">
@@ -79,10 +63,10 @@ export default function FarmerImpactSection1() {
       
       {/* Text Section with staggered animations */}
       <motion.div
-        className="md:w-1/2 space-y-4 md:pl-10"
+        className="w-full md:w-1/2 space-y-4 md:pl-10"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: isMobile ? "0px" : "-100px" }}
+        viewport={{ once: true, margin: "-50px" }} // Consistent margin
         variants={container}
       >
         <motion.h2 
