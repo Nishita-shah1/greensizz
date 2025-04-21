@@ -1,20 +1,36 @@
-'use client'; // Required for animations in Next.js 13+
+'use client';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 export default function FarmerImpactSection1() {
-  // Animation variants
-  const container = {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Set initial value
+    handleResize();
+    
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Animation variants with TypeScript types
+  const container: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: isMobile ? 0.1 : 0.2,
       },
     },
   };
 
-  const item = {
+  const item: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
@@ -23,24 +39,29 @@ export default function FarmerImpactSection1() {
     },
   };
 
-  const imageAnimation = {
-    hidden: { opacity: 0, x: -50 },
+  const imageAnimation: Variants = {
+    hidden: { opacity: 0, x: isMobile ? 0 : -50 },
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
+      transition: { duration: isMobile ? 0.5 : 0.8, ease: "easeOut" },
     },
   };
 
-  return (
-    <section className="flex flex-col md:flex-row items-center justify-center py-30 px-8 md:px-12 bg-white ">
+  const benefits = [
+    "Reducing <strong>middlemen costs</strong> by up to 40%",
+    "Providing <strong>real-time market data</strong> to farmers",
+    "Creating <strong>direct buyer connections</strong>"
+  ];
 
+  return (
+    <section className="flex flex-col md:flex-row items-center justify-center py-24 px-8 md:px-12 bg-white overflow-hidden">
       {/* Image Section with animation */}
       <motion.div
         className="md:w-1/2 flex justify-center mb-8 md:mb-0"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: isMobile ? "0px" : "-100px" }}
         variants={imageAnimation}
       >
         <div className="relative w-full max-w-md">
@@ -51,6 +72,7 @@ export default function FarmerImpactSection1() {
             height={350} 
             className="rounded-lg shadow-xl"
             priority
+            quality={85}
           />
         </div>
       </motion.div>
@@ -60,18 +82,18 @@ export default function FarmerImpactSection1() {
         className="md:w-1/2 space-y-4 md:pl-10"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: isMobile ? "0px" : "-100px" }}
         variants={container}
       >
         <motion.h2 
-          className="text-4xl font-bold text-green-800"
+          className="text-3xl md:text-4xl font-bold text-green-800"
           variants={item}
         >
           Transforming <span className="text-green-600">Agriculture</span>
         </motion.h2>
         
         <motion.p 
-          className="text-gray-700 text-lg leading-relaxed"
+          className="text-gray-700 text-base md:text-lg leading-relaxed"
           variants={item}
         >
           Our platform is revolutionizing the way farmers connect with markets:
@@ -81,27 +103,16 @@ export default function FarmerImpactSection1() {
           className="space-y-3 text-gray-700"
           variants={container}
         >
-          <motion.li 
-            className="flex items-start"
-            variants={item}
-          >
-            <span className="text-green-600 mr-2">✓</span>
-            <span>Reducing <strong>middlemen costs</strong> by up to 40%</span>
-          </motion.li>
-          <motion.li 
-            className="flex items-start"
-            variants={item}
-          >
-            <span className="text-green-600 mr-2">✓</span>
-            <span>Providing <strong>real-time market data</strong> to farmers</span>
-          </motion.li>
-          <motion.li 
-            className="flex items-start"
-            variants={item}
-          >
-            <span className="text-green-600 mr-2">✓</span>
-            <span>Creating <strong>direct buyer connections</strong></span>
-          </motion.li>
+          {benefits.map((text, index) => (
+            <motion.li 
+              key={index}
+              className="flex items-start"
+              variants={item}
+            >
+              <span className="text-green-600 mr-2">✓</span>
+              <span dangerouslySetInnerHTML={{ __html: text }} />
+            </motion.li>
+          ))}
         </motion.ul>
         
         <motion.div 
