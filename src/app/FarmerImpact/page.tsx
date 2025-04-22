@@ -13,6 +13,7 @@ import FarmerImpactSection2 from '@/components/FarmerImpact/FarmerImpactSection2
 import FarmerImpactSection3 from '@/components/FarmerImpact/FarmerImpactSection3';
 import FarmerImpactSection4 from '@/components/FarmerImpact/FarmerImpactSection4';
 import FarmerImpactSection5 from '@/components/FarmerImpact/FarmerImpactSection5';
+import WhiteLine from '@/components/WhiteLine';
 
 const FarmerImpact = () => {
   const impactStats = [
@@ -91,10 +92,12 @@ const FarmerImpact = () => {
   return (
     <div className="bg-green-50">
       <Nav />
+      <WhiteLine/>
       <FarmerImpactSection1 />
       <FarmerImpactSection2 />
       <FarmerImpactSection3 />
       <FarmerImpactSection4 />
+      <FarmerImpactSection5 />
       
       {/* Farmer-Centric Benefits Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">

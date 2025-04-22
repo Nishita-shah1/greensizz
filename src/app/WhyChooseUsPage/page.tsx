@@ -9,6 +9,7 @@ import TestimonialSection from '@/components/TestimonialSection';
 import Section2 from '@/components/Section2'; // Your existing Section2
 import CTASection from '@/components/CTASection';
 import Section7 from '@/components/Section7';
+import WhiteLine from '@/components/WhiteLine';
 
 const WhyChooseUsPage = () => {
   const impactStats = [
@@ -87,6 +88,7 @@ const WhyChooseUsPage = () => {
   return (
     <div className="bg-green-50">
       <Nav />
+      <WhiteLine/>
       <HeroSection />
       <ImpactStatsSection impactStats={impactStats} />
       <EnhancedBenefitsSection detailedBenefits={detailedBenefits} />
