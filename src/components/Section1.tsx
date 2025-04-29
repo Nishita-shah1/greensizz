@@ -150,7 +150,7 @@ const Section1: React.FC<Section1Props> = () => {
           className="relative"
         >
           <Image
-            src="/delgirl.png"
+            src="/section1.jpeg"
             alt="Sustainable Farming"
             width={400}
             height={400}

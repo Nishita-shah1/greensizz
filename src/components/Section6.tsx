@@ -43,7 +43,7 @@ export default function Section6() {
           <div className="lg:w-1/2">
             <div className="relative">
               <Image 
-                src="/powerbytech.png" 
+                src="/techdriven.jpeg" 
                 alt="AI technology optimizing food supply chain" 
                 width={600} 
                 height={400} 

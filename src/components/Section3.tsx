@@ -132,7 +132,7 @@ export default function Section3() {
         >
           <div className="relative">
             <Image
-              src="/empower.png" // Replace with your image
+              src="/section3.jpeg" // Replace with your image
               alt="WhatsApp powered supply chain"
               width={600}
               height={500}

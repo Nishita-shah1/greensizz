@@ -40,7 +40,7 @@ export default function Section4() {
       <div className="md:w-1/2 flex justify-center mt-8 md:mt-0">
         <div className="relative w-full max-w-md">
           <Image 
-            src="/empower.png" 
+            src="/farmermultiple.gif" 
             alt="Happy farmer holding fresh produce" 
             width={500} 
             height={350} 
