@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const banners = [
-  "/banner.jpg", // Correct way to reference images in the public folder
-  "/banner2.jpeg"
- 
+  "/banner1.jpeg",
+  "/banner2.jpg"
 ];
 
 export default function SlidingBanner() {
@@ -31,14 +30,14 @@ export default function SlidingBanner() {
   };
 
   return (
-    <div className="relative w-full h-[300px] md:h-[500px] overflow-hidden">
+    <div className="relative w-full h-[300px] md:h-[500px] overflow-hidden bg-black">
       {/* Slide Container */}
       <AnimatePresence mode="wait">
         <motion.img
           key={banners[currentIndex]}
           src={banners[currentIndex]}
           alt={`Banner ${currentIndex + 1}`}
-          className="absolute w-full h-full object-cover"
+          className="absolute w-full h-full object-contain bg-black"
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -100 }}
@@ -51,7 +50,7 @@ export default function SlidingBanner() {
         onClick={prevSlide}
         className="absolute left-5 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition"
       >
-        &#10094; {/* Left Arrow */}
+        &#10094;
       </button>
 
       {/* Next Button */}
@@ -59,7 +58,7 @@ export default function SlidingBanner() {
         onClick={nextSlide}
         className="absolute right-5 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition"
       >
-        &#10095; {/* Right Arrow */}
+        &#10095;
       </button>
 
       {/* Dots Navigation */}
