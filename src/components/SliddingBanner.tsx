@@ -14,7 +14,7 @@ export default function SlidingBanner() {
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 3000); // Change slide every 3 seconds
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [currentIndex]);
@@ -30,14 +30,14 @@ export default function SlidingBanner() {
   };
 
   return (
-    <div className="relative w-full h-[300px] md:h-[500px] overflow-hidden bg-black">
+    <div className="relative w-full h-[50vh] min-h-[300px] overflow-hidden">
       {/* Slide Container */}
       <AnimatePresence mode="wait">
         <motion.img
           key={banners[currentIndex]}
           src={banners[currentIndex]}
           alt={`Banner ${currentIndex + 1}`}
-          className="absolute w-full h-full object-contain bg-black"
+          className="absolute w-full h-full object-cover"
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -100 }}
@@ -48,7 +48,7 @@ export default function SlidingBanner() {
       {/* Previous Button */}
       <button
         onClick={prevSlide}
-        className="absolute left-5 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition"
+        className="absolute left-5 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition z-10"
       >
         &#10094;
       </button>
@@ -56,13 +56,13 @@ export default function SlidingBanner() {
       {/* Next Button */}
       <button
         onClick={nextSlide}
-        className="absolute right-5 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition"
+        className="absolute right-5 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition z-10"
       >
         &#10095;
       </button>
 
       {/* Dots Navigation */}
-      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
         {banners.map((_, index) => (
           <div
             key={index}

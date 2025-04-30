@@ -32,7 +32,7 @@ export default function Nav() {
       <div className="hidden lg:flex justify-between items-center px-10">
         {/* Logo */}
         <div className="flex items-center">
-          <img src="/logo.png" alt="AgriChain Logo" className="h-10 w-auto" />
+          <img src="/farmeallogo.png" alt="AgriChain Logo" className="h-10 w-auto" />
         </div>
 
         {/* Center Nav Items */}
@@ -71,7 +71,7 @@ export default function Nav() {
       <div className="flex lg:hidden justify-between items-center px-4">
         {/* Logo */}
         <div className="flex items-center">
-          <img src="/logo.png" alt="AgriChain Logo" className="h-8 w-auto" />
+          <img src="/farmeallogo.png" alt="AgriChain Logo" className="h-8 w-auto" />
         </div>
 
         {/* Hamburger Icon */}

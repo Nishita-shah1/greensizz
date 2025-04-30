@@ -3,7 +3,13 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-const benefits = [
+interface Benefit {
+  title: string;
+  image: string;
+  description: string;
+}
+
+const benefits: Benefit[] = [
   {
     title: "Farm Fresh",
     image: "/pod.png",
@@ -11,7 +17,7 @@ const benefits = [
   },
   {
     title: "Transparent Pricing",
-    image: "/pod.png",
+    image: "/multi.png",
     description: "Clear, fair pricing with no hidden costs"
   },
   {
@@ -21,7 +27,7 @@ const benefits = [
   },
   {
     title: "Live Logistics Tracking",
-    image: "/multi.png",
+    image: "/track.png",
     description: "GPS-enabled tracking from farm to destination"
   },
   {
@@ -109,15 +115,16 @@ export default function Section2() {
             >
               <motion.div
                 variants={hoverVariants}
-                className="mb-4 bg-green-50 p-4 rounded-full"
+                className="mb-4 bg-green-50 rounded-full w-24 h-24 flex items-center justify-center p-2"
               >
-                <Image
-                  src={benefit.image}
-                  alt={benefit.title}
-                  width={80}
-                  height={80}
-                  className="object-contain"
-                />
+                <div className="relative w-16 h-16">
+                  <Image
+                    src={benefit.image}
+                    alt={benefit.title}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </motion.div>
               <h3 className="text-lg font-semibold text-green-800 mb-2 text-center">
                 {benefit.title}

@@ -39,11 +39,12 @@ export default function Section4() {
       {/* Image Section */}
       <div className="md:w-1/2 flex justify-center mt-8 md:mt-0">
         <div className="relative w-full max-w-md">
-          <Image 
-            src="/farmermultiple.gif" 
-            alt="Happy farmer holding fresh produce" 
-            width={500} 
-            height={350} 
+          <Image
+            src="/farmermultiple.gif"
+            alt="Happy farmer holding fresh produce"
+            width={500}
+            height={350}
+            unoptimized // Required for animated GIFs
             className="rounded-lg shadow-xl transform hover:scale-105 transition-transform duration-500"
           />
           <div className="absolute -bottom-4 -right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-md">
