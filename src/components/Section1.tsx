@@ -117,6 +117,7 @@ const Section1: React.FC<Section1Props> = () => {
               transition: { duration: 0.05 }
             }}
             className="mt-4 px-8 py-3 bg-gradient-to-r from-[#F79256] to-[#f66b2a] text-white font-medium rounded-full shadow-lg transition-all relative overflow-hidden"
+            onClick={() => window.location.href = '/price-prediction'}
           >
             <span className="relative z-10">Join the Movement</span>
             <motion.span
@@ -127,6 +128,14 @@ const Section1: React.FC<Section1Props> = () => {
           <p className="text-sm text-gray-500 mt-3">
             Already helping 1,200+ farmers across India
           </p>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-3 px-6 py-2 bg-green-600 text-white font-medium rounded-full shadow-md transition-all"
+            onClick={() => window.location.href = '/price-prediction'}
+          >
+            Try AI Price Prediction
+          </motion.button>
         </motion.div>
       </motion.div>
 

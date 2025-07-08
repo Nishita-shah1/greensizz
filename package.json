@@ -9,14 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-node": "^4.22.0",
     "@types/gsap": "^1.20.2",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.7.4",
     "gsap": "^3.12.7",
     "next": "15.2.4",
+    "pandas-js": "^0.2.4",
+    "plotly.js-dist-min": "^3.0.1",
     "react": "^19.0.0",
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
-    "react-intersection-observer": "^9.16.0"
+    "react-intersection-observer": "^9.16.0",
+    "recharts": "^3.0.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
