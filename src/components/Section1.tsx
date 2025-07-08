@@ -134,7 +134,7 @@ const Section1: React.FC<Section1Props> = () => {
             className="mt-3 px-6 py-2 bg-green-600 text-white font-medium rounded-full shadow-md transition-all"
             onClick={() => window.location.href = '/price-prediction'}
           >
-            Try AI Price Prediction
+            Try Advanced AI Model (87% Accuracy)
           </motion.button>
         </motion.div>
       </motion.div>

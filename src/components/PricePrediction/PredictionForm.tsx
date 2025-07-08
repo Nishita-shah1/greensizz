@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { mlModel, PredictionInput, PredictionResult } from '@/lib/mlModel';
+import { trainedModel, PredictionInput, PredictionResult } from '@/lib/trainedModel';
 
 interface PredictionFormProps {
   onPredictionResult: (result: PredictionResult) => void;
@@ -39,7 +39,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ onPredictionResult }) =
     setError(null);
 
     try {
-      const result = await mlModel.predict(formData);
+      const result = await trainedModel.predict(formData);
       onPredictionResult(result);
     } catch (err) {
       setError('Failed to generate prediction. Please try again.');

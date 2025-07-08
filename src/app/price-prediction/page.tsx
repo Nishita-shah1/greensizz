@@ -1,4 +1,4 @@
-import PredictionDashboard from '@/components/PricePrediction/PredictionDashboard';
+import EnhancedPredictionDashboard from '@/components/PricePrediction/EnhancedPredictionDashboard';
 import Nav from '@/components/Nav';
 import WhiteLine from '@/components/WhiteLine';
 import Section7 from '@/components/Section7';
@@ -8,7 +8,7 @@ export default function PricePredictionPage() {
     <div className="min-h-screen">
       <Nav />
       <WhiteLine />
-      <PredictionDashboard />
+      <EnhancedPredictionDashboard />
       <Section7 />
     </div>
   );
