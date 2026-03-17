@@ -14,7 +14,7 @@ const navItems: NavItem[] = [
   { name: 'Why Choose Us', href: '/WhyChooseUsPage' },
   { name: 'Farmer Impact', href: '/FarmerImpact' },
   { name: 'SDG Goals', href: '/Sdggoal' },
-  { name: 'About Us', href: '/about-us' },
+  { name: 'Donate', href: '/Donate' },
   { name: 'Contact', href: '/contact' },
 ];
 
