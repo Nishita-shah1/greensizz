@@ -1,5 +1,20 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## AI-Powered Price Prediction Feature
+
+This project now includes an advanced machine learning-based price prediction system for agricultural commodities. The system uses TensorFlow.js to provide real-time price predictions based on:
+
+- Weather conditions (temperature, humidity, precipitation, UV index)
+- Market data (arrivals, historical prices)
+- Temporal factors (seasonality, day of year)
+
+### Features:
+- **Real-time Predictions**: Instant price forecasting using neural networks
+- **Interactive Dashboard**: User-friendly interface for inputting parameters
+- **Visual Analytics**: Charts and graphs for trend analysis
+- **Smart Recommendations**: AI-generated insights and suggestions
+- **High Accuracy**: Model trained on extensive historical data
+
 ## Getting Started
 
 First, run the development server:
