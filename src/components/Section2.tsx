@@ -1,7 +1,8 @@
 'use client';
 
+import React from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 interface Benefit {
   title: string;
@@ -9,70 +10,43 @@ interface Benefit {
   description: string;
 }
 
-const benefits: Benefit[] = [
-  {
-    title: "Farm Fresh",
-    image: "/pod.png",
-    description: "Direct from farm to your location"
-  },
-  {
-    title: "Transparent Pricing",
-    image: "/multi.png",
-    description: "Clear, fair pricing with no hidden costs"
-  },
-  {
-    title: "Automated Order Scheduling",
-    image: "/tp.png",
-    description: "Smart algorithms optimize delivery schedules"
-  },
-  {
-    title: "Live Logistics Tracking",
-    image: "/track.png",
-    description: "GPS-enabled tracking from farm to destination"
-  },
-  {
-    title: "Smart Invoicing",
-    image: "/support.png",
-    description: "Automated digital ledger integration"
-  },
-  {
-    title: "24/7 Human Support",
-    image: "/pod.png",
-    description: "Voice-based assistance anytime"
-  }
+const BENEFITS_DATA: Benefit[] = [
+  { title: "Farm Fresh", image: "/pod.png", description: "Direct from farm to your location" },
+  { title: "Transparent Pricing", image: "/multi.png", description: "Clear, fair pricing with no hidden costs" },
+  { title: "Automated Order Scheduling", image: "/tp.png", description: "Smart algorithms optimize delivery schedules" },
+  { title: "Live Logistics Tracking", image: "/track.png", description: "GPS-enabled tracking from farm to destination" },
+  { title: "Smart Invoicing", image: "/support.png", description: "Automated digital ledger integration" },
+  { title: "24/7 Human Support", image: "/pod.png", description: "Voice-based assistance anytime" }
 ];
 
-const containerVariants = {
+const REVOLUTION_TAGS = [
+  "Reduced Waste", "Increased Farmer Income", "Faster Deliveries",
+  "Better Pricing", "Improved Transparency", "Sustainable Practices"
+];
+
+// FIXED: Animation Variants - Use proper easing types
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.3
-    }
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
+    transition: { duration: 0.5, ease: "easeOut" as const } // FIXED: Add 'as const'
   }
 };
 
-const hoverVariants = {
+const iconHoverVariants: Variants = {
   hover: {
-    y: -10,
-    scale: 1.05,
-    transition: {
-      duration: 0.3,
-      ease: "easeOut"
-    }
+    y: -8,
+    scale: 1.1,
+    transition: { duration: 0.3, ease: "easeInOut" as const } // FIXED: Add 'as const'
   }
 };
 
@@ -80,106 +54,105 @@ export default function Section2() {
   return (
     <section className="w-full py-16 bg-green-50 px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        {/* Animated Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12 px-4"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-3">Why Choose Us?</h2>
-          <motion.p 
-            className="text-green-600 text-lg max-w-2xl mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
+        
+        {/* Section Header */}
+        <header className="text-center mb-16">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-5xl font-extrabold text-green-900 mb-4"
           >
-            Building a sustainable food supply chain with minimal wastage
+            Why Choose Us?
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="text-green-700 text-lg max-w-2xl mx-auto font-medium"
+          >
+            Building a sustainable food supply chain with minimal wastage and maximum transparency.
           </motion.p>
-        </motion.div>
+        </header>
 
         {/* Benefits Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {benefits.map((benefit, index) => (
-            <motion.div
-              key={index}
+          {BENEFITS_DATA.map((benefit, index) => (
+            <motion.article
+              key={benefit.title}
               variants={itemVariants}
               whileHover="hover"
-              className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center border border-green-100 hover:shadow-lg transition-shadow"
+              className="bg-white rounded-2xl shadow-sm hover:shadow-xl p-8 flex flex-col items-center border border-green-100 transition-all duration-300"
             >
               <motion.div
-                variants={hoverVariants}
-                className="mb-4 bg-green-50 rounded-full w-24 h-24 flex items-center justify-center p-2"
+                variants={iconHoverVariants}
+                className="mb-6 bg-green-50 rounded-2xl w-24 h-24 flex items-center justify-center relative overflow-hidden group"
               >
-                <div className="relative w-16 h-16">
+                <div className="relative w-14 h-14">
                   <Image
                     src={benefit.image}
-                    alt={benefit.title}
+                    alt="" // Decorative icon
                     fill
+                    sizes="56px"
                     className="object-contain"
+                    priority={index < 3} // Priority for top row
                   />
                 </div>
               </motion.div>
-              <h3 className="text-lg font-semibold text-green-800 mb-2 text-center">
+              
+              <h3 className="text-xl font-bold text-green-800 mb-3 text-center">
                 {benefit.title}
               </h3>
-              <motion.p 
-                className="text-green-600 text-sm text-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+              <p className="text-green-600 text-center leading-relaxed">
                 {benefit.description}
-              </motion.p>
-            </motion.div>
+              </p>
+            </motion.article>
           ))}
         </motion.div>
 
-        {/* Storytelling Section */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1 }}
+        {/* Storytelling Banner */}
+        <motion.footer
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="mt-16 bg-green-100 rounded-2xl p-8 mx-4 relative overflow-hidden"
+          transition={{ duration: 0.8 }}
+          className="mt-20 bg-green-900 rounded-3xl p-8 md:p-12 relative overflow-hidden text-white"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-10"></div>
+          {/* Decorative background element */}
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(34,197,94,0.2),transparent)] pointer-events-none" />
+          
           <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <h3 className="text-2xl font-bold text-green-800 mb-4">Our Agriculture Sector Revolution</h3>
-            <p className="text-green-700 mb-6">
-              We've transformed the agricultural supply chain with:
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">Our Agriculture Sector Revolution</h3>
+            <p className="text-green-100 mb-10 text-lg">
+              We are leveraging technology to empower producers and streamline the journey from farm to fork.
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              {[
-                "Reduced Waste",
-                "Increased Farmer Income",
-                "Faster Deliveries",
-                "Better Pricing",
-                "Improved Transparency",
-                "Sustainable Practices"
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
+            
+            <div className="flex flex-wrap gap-3 justify-center">
+              {REVOLUTION_TAGS.map((tag, idx) => (
+                <motion.span
+                  key={tag}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 * idx }}
                   viewport={{ once: true }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-white rounded-lg px-4 py-2 shadow-md text-green-800 font-medium"
+                  whileHover={{ scale: 1.05, backgroundColor: "#f0fdf4", color: "#166534" }}
+                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2 text-sm md:text-base font-semibold transition-colors cursor-default"
                 >
-                  {item}
-                </motion.div>
+                  {tag}
+                </motion.span>
               ))}
             </div>
           </div>
-        </motion.div>
+        </motion.footer>
+
       </div>
     </section>
   );

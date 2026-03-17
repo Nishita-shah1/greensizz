@@ -9,23 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@supabase/supabase-js": "^2.99.2",
-=======
+    "@supabase/supabase-js": "^2.45.0",
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-node": "^4.22.0",
->>>>>>> 3a7dba5414e18331fffc81d43a3709ed68c991dc
     "@types/gsap": "^1.20.2",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.7.4",
     "gsap": "^3.12.7",
     "next": "15.2.4",
-<<<<<<< HEAD
-    "razorpay": "^2.9.6",
-=======
     "pandas-js": "^0.2.4",
     "plotly.js-dist-min": "^3.0.1",
->>>>>>> 3a7dba5414e18331fffc81d43a3709ed68c991dc
+    "razorpay": "^2.9.6",
     "react": "^19.0.0",
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
@@ -36,9 +30,9 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^3.4.19",
     "typescript": "^5"
   }
 }

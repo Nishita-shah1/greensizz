@@ -111,8 +111,20 @@ class TrainedMLModel {
         const newWeights = weights.map(weight => {
           // Initialize with small random values similar to trained model
           const shape = weight.shape;
-          const fanIn = shape.length > 1 ? shape[0] : 1;
-          const fanOut = shape.length > 1 ? shape[1] : shape[0];
+          
+          // FIXED: Properly handle fanIn and fanOut with type safety
+          // Use non-null assertion or default values for array access
+          const fanIn = shape[0] !== undefined ? shape[0] : 1;
+          
+          // Safer way to calculate fanOut with explicit undefined checks
+          let fanOut: number;
+          if (shape.length > 1) {
+            fanOut = shape[1] !== undefined ? shape[1] : fanIn;
+          } else {
+            fanOut = fanIn;
+          }
+          
+          // Calculate limit with safe values
           const limit = Math.sqrt(6 / (fanIn + fanOut));
           
           return tf.randomUniform(shape, -limit, limit);
