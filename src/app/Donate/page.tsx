@@ -3,7 +3,6 @@
 import React, { useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
-// Updated keys to only include requested fruits
 type FruitKey = "Apples" | "Mangoes" | "Pears";
 
 type PartnerPlace = {
@@ -17,8 +16,8 @@ type PartnerPlace = {
 };
 
 const UPI_ID = "manishsnitk@okaxis";
+const PAYEE_NAME = "Fruit Donation";
 
-// Updated fruit list with descriptions
 const FRUITS: Array<{
   key: FruitKey;
   blurb: string;
@@ -72,6 +71,20 @@ function clampInt(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, Math.trunc(n)));
 }
 
+/** Builds a UPI deep-link URL and navigates to it, which triggers the OS UPI app picker */
+function openUpiPayment(amount: number) {
+  if (amount <= 0) return;
+  // UPI intent URL — works on Android natively; iOS opens via browser/app
+  const params = new URLSearchParams({
+    pa: UPI_ID,          // payee VPA
+    pn: PAYEE_NAME,      // payee name
+    am: amount.toFixed(2), // amount
+    cu: "INR",
+    tn: "Fruit Donation", // transaction note
+  });
+  window.location.href = `upi://pay?${params.toString()}`;
+}
+
 export default function DonatePage() {
   const [quantities, setQuantities] = useState<Record<FruitKey, number>>({
     Apples: 0,
@@ -85,14 +98,12 @@ export default function DonatePage() {
   const [donorName, setDonorName] = useState("");
   const [note, setNote] = useState("");
   const [paid, setPaid] = useState(false);
-  const [utr, setUtr] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState<null | {
     receiptId: string;
     total: number;
     place?: PartnerPlace;
   }>(null);
-  const [copied, setCopied] = useState(false);
 
   const chosenItems = useMemo(() => {
     return FRUITS.map((f) => ({
@@ -122,48 +133,34 @@ export default function DonatePage() {
       selectedPlaceId &&
       donorName.trim().length >= 2 &&
       paid &&
-      utr.trim().length >= 6 &&
       !submitting
     );
-  }, [chosenItems.length, estimatedTotal, pincode, city, selectedPlaceId, donorName, paid, utr, submitting]);
-
-  async function onCopyUpi() {
-    try {
-      await navigator.clipboard.writeText(UPI_ID);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1500);
-    } catch { /* fallback */ }
-  }
+  }, [chosenItems.length, estimatedTotal, pincode, city, selectedPlaceId, donorName, paid, submitting]);
 
   async function onSubmit() {
     if (!canSubmit) return;
     setSubmitting(true);
-  
+
     try {
-      // 1. Prepare the data for the database
       const donationData = {
         donor_name: donorName.trim(),
-        utr: utr.trim(),
         total_amount: estimatedTotal,
         city: city.trim(),
         pincode: pincode.trim(),
         selected_place_id: selectedPlaceId,
-        items: quantities, // Stores the { Apples: X, Mangoes: Y... } object
+        items: quantities,
         note: note.trim(),
       };
-  
-      // 2. Insert into Supabase
+
       const { data, error } = await supabase
-        .from('donations')
+        .from("donations")
         .insert([donationData])
         .select();
-  
+
       if (error) throw error;
-  
-      // 3. Update local state to show success
+
       const receiptId = `DON-${data[0].id.slice(0, 4).toUpperCase()}`;
       setSubmitted({ receiptId, total: estimatedTotal, place: selectedPlace });
-  
     } catch (error) {
       console.error("Error saving donation:", error);
       alert("Something went wrong saving your donation. Please try again.");
@@ -233,7 +230,7 @@ export default function DonatePage() {
 
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-8 lg:grid-cols-12">
-          
+
           {/* Left Column: Fruit Selection */}
           <div className="lg:col-span-7 space-y-6">
             <section className="rounded-3xl border border-white bg-white/70 p-6 shadow-sm backdrop-blur-sm sm:p-8">
@@ -256,11 +253,11 @@ export default function DonatePage() {
                       <p className="text-sm text-slate-500">{fruit.blurb}</p>
                       <p className="mt-1 text-xs font-semibold text-emerald-600">{inr(fruit.estPerUnitInr)} / unit</p>
                     </div>
-                    
+
                     <div className="flex items-center gap-4 bg-slate-50 p-1.5 rounded-xl">
                       <button
                         type="button"
-                        onClick={() => setQuantities(p => ({ ...p, [fruit.key]: clampInt(p[fruit.key] - 1, 0, 99) }))}
+                        onClick={() => setQuantities((p) => ({ ...p, [fruit.key]: clampInt(p[fruit.key] - 1, 0, 99) }))}
                         className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-xl font-bold text-slate-600 shadow-sm transition hover:bg-emerald-600 hover:text-white"
                       >
                         −
@@ -268,7 +265,7 @@ export default function DonatePage() {
                       <span className="w-8 text-center font-bold text-slate-900">{quantities[fruit.key]}</span>
                       <button
                         type="button"
-                        onClick={() => setQuantities(p => ({ ...p, [fruit.key]: clampInt(p[fruit.key] + 1, 0, 99) }))}
+                        onClick={() => setQuantities((p) => ({ ...p, [fruit.key]: clampInt(p[fruit.key] + 1, 0, 99) }))}
                         className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-xl font-bold text-slate-600 shadow-sm transition hover:bg-emerald-600 hover:text-white"
                       >
                         +
@@ -310,15 +307,17 @@ export default function DonatePage() {
                       key={p.id}
                       onClick={() => setSelectedPlaceId(p.id)}
                       className={`relative overflow-hidden rounded-2xl border p-4 text-left transition ${
-                        selectedPlaceId === p.id 
-                        ? "border-emerald-600 bg-emerald-50/30 ring-1 ring-emerald-600" 
-                        : "border-slate-100 bg-white hover:border-emerald-200"
+                        selectedPlaceId === p.id
+                          ? "border-emerald-600 bg-emerald-50/30 ring-1 ring-emerald-600"
+                          : "border-slate-100 bg-white hover:border-emerald-200"
                       }`}
                     >
                       <div className="flex justify-between items-start">
                         <div>
                           <p className="font-bold text-slate-900">{p.name}</p>
-                          <p className="text-xs text-slate-500">{p.type} • {p.area} • {p.distanceKm}km</p>
+                          <p className="text-xs text-slate-500">
+                            {p.type} • {p.area} • {p.distanceKm}km
+                          </p>
                         </div>
                         {selectedPlaceId === p.id && (
                           <div className="rounded-full bg-emerald-600 p-1 text-white">
@@ -340,48 +339,68 @@ export default function DonatePage() {
             <div className="sticky top-8 space-y-6">
               <section className="rounded-3xl border-t-4 border-t-emerald-600 bg-slate-900 p-6 text-white shadow-xl sm:p-8">
                 <h2 className="text-xl font-bold mb-6">Step 3: Secure Payment</h2>
-                
+
+                {/* Donor Name */}
+                <div className="mb-4">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">
+                    Donor Name
+                  </label>
+                  <input
+                    value={donorName}
+                    onChange={(e) => setDonorName(e.target.value)}
+                    placeholder="Your name for the video"
+                    className="w-full h-11 rounded-xl bg-white/5 border border-white/10 px-4 text-sm focus:outline-none focus:border-emerald-500 transition"
+                  />
+                </div>
+
+                {/* UPI Pay Button */}
                 <div className="mb-6 rounded-2xl bg-white/10 p-4 border border-white/10">
-                  <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">Scan or Copy UPI</p>
-                  <div className="mt-2 flex items-center justify-between">
-                    <span className="font-mono text-sm font-medium">{UPI_ID}</span>
-                    <button
-                      onClick={onCopyUpi}
-                      className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-emerald-500"
-                    >
-                      {copied ? "Copied!" : "Copy ID"}
-                    </button>
-                  </div>
+                  <p className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1">Pay via UPI</p>
+                  <p className="text-xs text-slate-400 mb-3">
+                    Tap below to open your UPI app with the amount pre-filled.
+                  </p>
+                  <button
+                    type="button"
+                    disabled={estimatedTotal <= 0}
+                    onClick={() => openUpiPayment(estimatedTotal)}
+                    className={`w-full h-12 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition ${
+                      estimatedTotal > 0
+                        ? "bg-emerald-500 hover:bg-emerald-400 text-slate-900 shadow-md shadow-emerald-500/20"
+                        : "bg-slate-700 text-slate-500 cursor-not-allowed"
+                    }`}
+                  >
+                    {/* UPI logo-ish icon */}
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-6m0 0V6m0 6H6m6 0h6" />
+                    </svg>
+                    {estimatedTotal > 0
+                      ? `Pay ${inr(estimatedTotal)} via UPI`
+                      : "Select fruits to pay"}
+                  </button>
+                  <p className="text-[10px] text-slate-500 mt-2 text-center">
+                    GPay · PhonePe · Paytm · BHIM — your phone will prompt you to choose.
+                  </p>
                 </div>
 
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">Donor Name</label>
-                    <input
-                      value={donorName}
-                      onChange={(e) => setDonorName(e.target.value)}
-                      placeholder="Your name for the video"
-                      className="w-full h-11 rounded-xl bg-white/5 border border-white/10 px-4 text-sm focus:outline-none focus:border-emerald-500 transition"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">UTR / Transaction ID</label>
-                    <input
-                      value={utr}
-                      onChange={(e) => setUtr(e.target.value)}
-                      placeholder="Enter 12-digit UTR"
-                      className="w-full h-11 rounded-xl bg-white/5 border border-white/10 px-4 text-sm focus:outline-none focus:border-emerald-500 transition"
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-6 flex items-start gap-3 rounded-xl bg-white/5 p-4 border border-white/5 cursor-pointer" onClick={() => setPaid(!paid)}>
-                  <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border transition ${paid ? "bg-emerald-500 border-emerald-500" : "border-white/20"}`}>
-                    {paid && <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path d="M5 13l4 4L19 7" /></svg>}
+                {/* Paid confirmation checkbox */}
+                <div
+                  className="mt-2 flex items-start gap-3 rounded-xl bg-white/5 p-4 border border-white/5 cursor-pointer"
+                  onClick={() => setPaid(!paid)}
+                >
+                  <div
+                    className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border transition ${
+                      paid ? "bg-emerald-500 border-emerald-500" : "border-white/20"
+                    }`}
+                  >
+                    {paid && (
+                      <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
+                        <path d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
                   </div>
                   <div className="text-xs">
-                    <p className="font-bold">I have paid {inr(estimatedTotal)}</p>
-                    <p className="text-slate-400 mt-0.5">Payment is verified manually against the UTR.</p>
+                    <p className="font-bold">I have completed the UPI payment of {inr(estimatedTotal)}</p>
+                    <p className="text-slate-400 mt-0.5">Payment is verified against your UPI transaction record.</p>
                   </div>
                 </div>
 
@@ -389,9 +408,9 @@ export default function DonatePage() {
                   onClick={onSubmit}
                   disabled={!canSubmit}
                   className={`mt-8 w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest transition-all ${
-                    canSubmit 
-                    ? "bg-emerald-500 text-slate-900 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20" 
-                    : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                    canSubmit
+                      ? "bg-emerald-500 text-slate-900 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20"
+                      : "bg-slate-800 text-slate-500 cursor-not-allowed"
                   }`}
                 >
                   {submitting ? "Processing..." : "Complete Donation"}
@@ -404,13 +423,17 @@ export default function DonatePage() {
                 <ul className="space-y-3">
                   {[
                     { label: "Selected fruit items", met: chosenItems.length > 0 },
-                    { label: "Delivery area provided", met: (pincode.trim() || city.trim()) },
-                    { label: "Partner location selected", met: selectedPlaceId },
+                    { label: "Delivery area provided", met: !!(pincode.trim() || city.trim()) },
+                    { label: "Partner location selected", met: !!selectedPlaceId },
                     { label: "Donor identity added", met: donorName.trim().length >= 2 },
-                    { label: "Valid UTR reference", met: utr.trim().length >= 6 }
+                    { label: "Payment completed", met: paid },
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-center gap-3 text-xs font-medium">
-                      <div className={`h-2 w-2 rounded-full transition-colors ${item.met ? "bg-emerald-500" : "bg-slate-200"}`} />
+                      <div
+                        className={`h-2 w-2 rounded-full transition-colors ${
+                          item.met ? "bg-emerald-500" : "bg-slate-200"
+                        }`}
+                      />
                       <span className={item.met ? "text-slate-900" : "text-slate-400"}>{item.label}</span>
                     </li>
                   ))}
@@ -418,7 +441,6 @@ export default function DonatePage() {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </main>
